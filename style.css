@@ -290,9 +290,13 @@ button:hover {
   width: 100%;
 }
 
+/* ============================================= */
+/* PAGE MARGINS: Top 1 inch, Bottom 0.5 inch, No side margins */
+/* ============================================= */
 .page {
   background: white;
-  padding: 25.4mm 12.7mm;
+  /* Top: 1 inch (25.4mm), Bottom: 0.5 inch (12.7mm), Left/Right: 0 */
+  padding: 25.4mm 0mm 12.7mm 0mm;
   position: relative;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   page-break-after: always;
@@ -301,6 +305,81 @@ button:hover {
   min-height: 148mm;
   transform-origin: center top;
 }
+
+/* Optionally, if you want inner content to have automatic side spacing */
+/* but strictly no margin on left/right edges as requested */
+.page > * {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* If you need to ensure any inner containers don't add side padding */
+.page svg,
+.page .handwriting-area,
+.page .content {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+/* ============================================= */
+/* END OF MARGIN STYLES */
+/* ============================================= */
+
+/* ============================================= */
+/* BLUE-RED-BLUE LINE - MADE THICKER */
+/* This targets the handwriting guideline line */
+/* ============================================= */
+
+/* Primary target for the blue-red-blue tracing line */
+.page .blue-red-blue-line,
+.page .guideline-multi,
+.page .writing-line {
+  stroke-width: 3px !important;
+}
+
+/* Target any line element that has these specific colors */
+.page line[stroke="#4A6FA5"],
+.page path[stroke="#4A6FA5"],
+.page line[stroke="#FF6B6B"],
+.page path[stroke="#FF6B6B"] {
+  stroke-width: 2.8px !important;
+}
+
+/* Specific selector for the three-line pattern (blue, red, blue) */
+.page .line-top,
+.page .line-middle,
+.page .line-bottom {
+  stroke-width: 2.8px !important;
+}
+
+/* General catch-all for any line inside the handwriting page */
+.page svg line,
+.page svg path {
+  stroke-width: 2.8px !important;
+}
+
+/* If the line uses a specific class name from your generator */
+.handwriting-line,
+.trace-line,
+.dotted-line,
+.guideline {
+  stroke-width: 2.8px !important;
+}
+
+/* For canvas-based rendering (if canvas is used instead of SVG) */
+.page canvas#lineCanvas {
+  stroke-width: 3px !important;
+}
+
+/* Ensure the red middle line also gets appropriate thickness */
+.page [stroke="#FF6B6B"],
+.page [color="#FF6B6B"] {
+  stroke-width: 2.8px !important;
+}
+
+/* ============================================= */
+/* END OF THICKER LINE STYLES */
+/* ============================================= */
 
 /* Responsive scaling for the page */
 @media (max-width: 1200px) {
@@ -318,7 +397,7 @@ button:hover {
 @media (max-width: 768px) {
   .page {
     transform: scale(0.7);
-  width: 100%;
+    width: 100%;
     height: auto;
     aspect-ratio: 210 / 148;
   }
@@ -502,10 +581,8 @@ footer {
     height: auto;
     box-shadow: none;
     page-break-inside: avoid;
-    padding-top: 25.4mm;
-    padding-left: 12.7mm;
-    padding-right: 12.7mm;
-    padding-bottom: 0.0mm;
+    /* Keep print margins: Top 1 inch, Bottom 0.5 inch, no side margins */
+    padding: 25.4mm 0mm 12.7mm 0mm !important;
     border: none;
   }
 
@@ -518,5 +595,11 @@ footer {
     margin: 0;
     padding: 0;
     box-shadow: none;
+  }
+  
+  /* Keep the lines thicker even in print */
+  .page svg line,
+  .page svg path {
+    stroke-width: 2.8px !important;
   }
 }
